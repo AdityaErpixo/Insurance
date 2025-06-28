@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Blog - Mishika Finvest Pvt Ltd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#130F32',
+                        secondary: '#00CEE8',
+                        accent: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .blog-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+        .blog-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            border-color: #00CEE8;
+        }
+        .blog-card:hover .blog-image {
+            transform: scale(1.1);
+        }
+        .blog-image {
+            transition: transform 0.4s ease;
+        }
+        .category-tag {
+            background: linear-gradient(135deg, #00CEE8 0%, #0891b2 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .featured-gradient {
+            background: linear-gradient(135deg, #130F32 0%, #1e1b4b 50%, #312e81 100%);
+        }
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .floating-elements::before,
+        .floating-elements::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(0, 206, 232, 0.1) 0%, rgba(8, 145, 178, 0.05) 100%);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        .floating-elements::before {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        .floating-elements::after {
+            bottom: 20%;
+            right: 10%;
+            animation-delay: 4s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+        .search-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .search-box:focus-within {
+            border-color: #00CEE8;
+            box-shadow: 0 0 0 3px rgba(0, 206, 232, 0.1);
+        }
+        .sidebar-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        .sidebar-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 3px solid #00CEE8;
+            object-fit: cover;
+        }
+        .read-time {
+            background: rgba(0, 206, 232, 0.1);
+            color: #00CEE8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-primary">Mishika <span class="gradient-text">Finvest</span></h1>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">Home</a>
+                        
+                        <div class="relative dropdown">
+                            <button class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium flex items-center">
+                                Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                            </button>
+                            <div class="dropdown-menu absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2">
+                                <a href="mutual-funds.html" class="block px-4 py-3 text-sm text-gray-700 hover:bg-secondary/10 hover:text-secondary transition-colors">
+                                    <i class="fas fa-chart-line mr-3 text-secondary"></i>Mutual Fund Services
+                                </a>
+                                <a href="insurance.html" class="block px-4 py-3 text-sm text-gray-700 hover:bg-secondary/10 hover:text-secondary transition-colors">
+                                    <i class="fas fa-shield-alt mr-3 text-secondary"></i>Health & Life Insurance
+                                </a>
+                                <a href="vehicle-insurance.html" class="block px-4 py-3 text-sm text-gray-700 hover:bg-secondary/10 hover:text-secondary transition-colors">
+                                    <i class="fas fa-car mr-3 text-secondary"></i>Vehicle Insurance
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <a href="about.html" class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">About Us</a>
+                        <a href="tools.html" class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">Tools</a>
+                        <a href="blog.html" class="text-secondary px-3 py-2 text-sm font-medium">Blog</a>
+                        <a href="contact.html" class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">Contact</a>
+                        <button onclick="window.location.href='contact.html'" class="bg-secondary text-white px-6 py-2 rounded-full hover:bg-secondary/90 transition-colors font-medium">
+                            Get Quote
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-primary hover:text-secondary p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 hidden">
+        <div class="fixed inset-0 bg-black/50" id="mobile-menu-overlay"></div>
+        <div class="offcanvas fixed top-0 left-0 h-full w-80 bg-white shadow-xl">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-xl font-bold text-primary">Menu</h2>
+                    <button id="close-mobile-menu" class="text-primary hover:text-secondary">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <nav class="space-y-4">
+                    <a href="index.html" class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Home</a>
+                    <div class="space-y-2">
+                        <p class="text-primary font-medium py-2">Services</p>
+                        <a href="mutual-funds.html" class="block text-gray-600 hover:text-secondary transition-colors py-2 pl-4">Mutual Fund Services</a>
+                        <a href="insurance.html" class="block text-gray-600 hover:text-secondary transition-colors py-2 pl-4">Health & Life Insurance</a>
+                        <a href="vehicle-insurance.html" class="block text-gray-600 hover:text-secondary transition-colors py-2 pl-4">Vehicle Insurance</a>
+                    </div>
+                    <a href="about.html" class="block text-primary hover:text-secondary transition-colors py-2 font-medium">About Us</a>
+                    <a href="tools.html" class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Tools</a>
+                    <a href="blog.html" class="block text-secondary py-2 font-medium">Blog</a>
+                    <a href="contact.html" class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Page Header -->
+    <section class="relative pt-24 pb-16 overflow-hidden">
+        <div class="floating-elements"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center">
+                <div class="inline-flex items-center bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium mb-6">
+                    <i class="fas fa-blog mr-2"></i>
+                    Financial Insights & Tips
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-primary mb-6">
+                    Expert Financial
+                    <span class="bg-gradient-to-r from-secondary to-blue-600 bg-clip-text text-transparent">
+                        Insights
+                    </span>
+                </h1>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    Stay ahead with expert advice, market insights, and practical financial tips from our experienced advisors
+                </p>
+                
+                <!-- Enhanced Search Box -->
+                <div class="max-w-2xl mx-auto">
+                    <div class="search-box flex items-center px-6 py-4">
+                        <i class="fas fa-search text-gray-400 mr-4"></i>
+                        <input type="text" placeholder="Search articles, topics, or keywords..." 
+                               class="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-400">
+                        <button class="bg-secondary text-white px-6 py-2 rounded-full hover:bg-secondary/90 transition-colors ml-4">
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Article -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="featured-gradient rounded-3xl overflow-hidden shadow-2xl">
+                <div class="grid lg:grid-cols-2">
+                    <div class="p-8 lg:p-12 text-white">
+                        <div class="flex items-center mb-6">
+                            <span class="category-tag bg-secondary">Featured Article</span>
+                            <span class="text-gray-300 text-sm ml-4">December 15, 2024</span>
+                            <span class="read-time ml-4">8 min read</span>
+                        </div>
+                        <h2 class="text-4xl font-bold mb-6">
+                            SIP vs Lump Sum: The Ultimate Investment Strategy Guide for 2024
+                        </h2>
+                        <p class="text-gray-300 mb-8 text-lg leading-relaxed">
+                            Market volatility has investors questioning their strategy. Should you invest a lump sum or start a SIP? 
+                            Our comprehensive analysis with real data and expert insights will help you make the right choice for your financial goals.
+                        </p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <img src="./images/p1.jpg" alt="Author" class="author-avatar mr-4">
+                                <div>
+                                    <p class="font-semibold text-white">Rajesh Mishika</p>
+                                    <p class="text-gray-300 text-sm">Senior Financial Advisor</p>
+                                </div>
+                            </div>
+                            <button class="bg-white text-primary px-8 py-3 rounded-full hover:bg-gray-100 transition-colors font-semibold">
+                                Read Full Article
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-64 lg:h-auto relative">
+                        <img src="./images/in1.jpg" alt="Featured Article" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Blog Categories -->
+    <section class="py-12 bg-white/70 backdrop-blur-sm sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-4">
+                <button class="blog-category bg-secondary text-white px-6 py-3 rounded-full font-semibold transition-all hover:shadow-lg" data-category="all">
+                    <i class="fas fa-th-large mr-2"></i>All Articles
+                </button>
+                <button class="blog-category bg-white text-gray-600 px-6 py-3 rounded-full font-semibold border-2 border-gray-200 hover:border-secondary hover:text-secondary transition-all" data-category="mutual-funds">
+                    <i class="fas fa-chart-line mr-2"></i>Mutual Funds
+                </button>
+                <button class="blog-category bg-white text-gray-600 px-6 py-3 rounded-full font-semibold border-2 border-gray-200 hover:border-secondary hover:text-secondary transition-all" data-category="insurance">
+                    <i class="fas fa-shield-alt mr-2"></i>Insurance
+                </button>
+                <button class="blog-category bg-white text-gray-600 px-6 py-3 rounded-full font-semibold border-2 border-gray-200 hover:border-secondary hover:text-secondary transition-all" data-category="tax-planning">
+                    <i class="fas fa-receipt mr-2"></i>Tax Planning
+                </button>
+                <button class="blog-category bg-white text-gray-600 px-6 py-3 rounded-full font-semibold border-2 border-gray-200 hover:border-secondary hover:text-secondary transition-all" data-category="retirement">
+                    <i class="fas fa-piggy-bank mr-2"></i>Retirement
+                </button>
+                <button class="blog-category bg-white text-gray-600 px-6 py-3 rounded-full font-semibold border-2 border-gray-200 hover:border-secondary hover:text-secondary transition-all" data-category="market-insights">
+                    <i class="fas fa-chart-bar mr-2"></i>Market Insights
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Blog Articles -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-3 gap-12">
+                <!-- Main Content -->
+                <div class="lg:col-span-2">
+                    <div class="grid gap-8">
+                        <!-- Article 1 -->
+                        <article class="blog-card rounded-2xl overflow-hidden shadow-lg">
+                            <div class="blog-image h-64 overflow-hidden">
+                                <img src="./images/in2.jpg" alt="Article" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-8">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-4">
+                                        <span class="category-tag">Mutual Funds</span>
+                                        <span class="read-time">6 min read</span>
+                                    </div>
+                                    <span class="text-gray-500 text-sm">December 10, 2024</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-primary mb-4 hover:text-secondary transition-colors cursor-pointer">
+                                    Top 10 Mutual Funds to Invest in 2024: Expert Recommendations
+                                </h3>
+                                <p class="text-gray-600 mb-6 leading-relaxed">
+                                    Our research team has analyzed over 500 mutual fund schemes to bring you the top 10 funds that offer the best risk-adjusted returns for 2024. Discover which funds made the cut and why they're perfect for your portfolio.
+                                </p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <img src="./images/p2.jpg" alt="Author" class="w-10 h-10 rounded-full mr-3 border-2 border-secondary">
+                                        <div>
+                                            <p class="font-semibold text-primary">Priya Sharma</p>
+                                            <p class="text-gray-500 text-sm">Investment Analyst</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <button class="text-gray-400 hover:text-secondary transition-colors">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        <button class="text-gray-400 hover:text-secondary transition-colors">
+                                            <i class="fas fa-share"></i>
+                                        </button>
+                                        <a href="#" class="bg-secondary text-white px-6 py-2 rounded-full hover:bg-secondary/90 transition-colors font-medium">
+                                            Read More
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Article 2 -->
+                        <article class="blog-card rounded-2xl overflow-hidden shadow-lg">
+                            <div class="blog-image h-64 overflow-hidden">
+                                <img src="./images/in3.jpg" alt="Article" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-8">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-4">
+                                        <span class="category-tag bg-green-500">Insurance</span>
+                                        <span class="read-time">8 min read</span>
+                                    </div>
+                                    <span class="text-gray-500 text-sm">December 8, 2024</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-primary mb-4 hover:text-secondary transition-colors cursor-pointer">
+                                    Health Insurance: How Much Coverage Do You Really Need?
+                                </h3>
+                                <p class="text-gray-600 mb-6 leading-relaxed">
+                                    With medical inflation rising at 15% annually, determining the right health insurance coverage has become crucial. Here's a comprehensive guide to help you calculate your ideal coverage amount.
+                                </p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <img src="./images/p3.jpg" alt="Author" class="w-10 h-10 rounded-full mr-3 border-2 border-secondary">
+                                        <div>
+                                            <p class="font-semibold text-primary">Amit Patel</p>
+                                            <p class="text-gray-500 text-sm">Insurance Specialist</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <button class="text-gray-400 hover:text-secondary transition-colors">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        <button class="text-gray-400 hover:text-secondary transition-colors">
+                                            <i class="fas fa-share"></i>
+                                        </button>
+                                        <a href="#" class="bg-secondary text-white px-6 py-2 rounded-full hover:bg-secondary/90 transition-colors font-medium">
+                                            Read More
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Article 3 -->
+                        <article class="blog-card rounded-2xl overflow-hidden shadow-lg">
+                            <div class="blog-image h-64 overflow-hidden">
+                                <img src="./images/in3.jpg" alt="Article" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-8">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex items-center space-x-4">
+                                        <span class="category-tag bg-purple-500">Tax Planning</span>
+                                        <span class="read-time">5 min read</span>
+                                    </div>
+                                    <span class="text-gray-500 text-sm">December 5, 2024</span>
+                                </div>
+                                <h3 class="text-2xl font-bold text-primary mb-4 hover:text-secondary transition-colors cursor-pointer">
+                                    Tax Saving Investments: Complete Guide for FY 2024-25
+                                </h3>
+                                <p class="text-gray-600 mb-6 leading-relaxed">
+                                    Maximize your tax savings with our comprehensive guide covering Section 80C, 80D, and other tax-saving investment options. Learn how to save up to ₹1.5 lakh in taxes legally.
+                                </p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <img src="./images/p1.jpg" alt="Author" class="w-10 h-10 rounded-full mr-3 border-2 border-secondary">
+                                        <div>
+                                            <p class="font-semibold text-primary">Rajesh Mishika</p>
+                                            <p class="text-gray-500 text-sm">Tax Planning Expert</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-4">
+                                        <button class="text-gray-400 hover:text-secondary transition-colors">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        <button class="text-gray-400 hover:text-secondary transition-colors">
+                                            <i class="fas fa-share"></i>
+                                        </button>
+                                        <a href="#" class="bg-secondary text-white px-6 py-2 rounded-full hover:bg-secondary/90 transition-colors font-medium">
+                                            Read More
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Enhanced Pagination -->
+                    <div class="flex justify-center mt-16">
+                        <nav class="flex items-center space-x-2">
+                            <button class="px-4 py-2 text-gray-500 hover:text-secondary transition-colors rounded-lg hover:bg-white">
+                                <i class="fas fa-chevron-left mr-1"></i>Previous
+                            </button>
+                            <button class="px-4 py-2 bg-secondary text-white rounded-lg font-semibold">1</button>
+                            <button class="px-4 py-2 text-gray-500 hover:text-secondary transition-colors rounded-lg hover:bg-white">2</button>
+                            <button class="px-4 py-2 text-gray-500 hover:text-secondary transition-colors rounded-lg hover:bg-white">3</button>
+                            <span class="px-2 text-gray-400">...</span>
+                            <button class="px-4 py-2 text-gray-500 hover:text-secondary transition-colors rounded-lg hover:bg-white">10</button>
+                            <button class="px-4 py-2 text-gray-500 hover:text-secondary transition-colors rounded-lg hover:bg-white">
+                                Next<i class="fas fa-chevron-right ml-1"></i>
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Enhanced Sidebar -->
+                <div class="space-y-8">
+                    <!-- Newsletter Signup -->
+                    <div class="sidebar-card">
+                        <div class="text-center mb-6">
+                            <div class="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-envelope text-secondary text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-primary mb-2">Stay Updated</h3>
+                            <p class="text-gray-600">Get weekly financial tips and market insights delivered to your inbox.</p>
+                        </div>
+                        <form class="newsletter-form space-y-4">
+                            <input type="email" placeholder="Enter your email address" 
+                                   class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-secondary transition-colors">
+                            <button type="submit" class="w-full bg-gradient-to-r from-secondary to-blue-600 text-white py-3 rounded-xl hover:shadow-lg transition-all transform hover:scale-105 font-semibold">
+                                <i class="fas fa-paper-plane mr-2"></i>Subscribe Now
+                            </button>
+                        </form>
+                        <p class="text-xs text-gray-500 text-center mt-3">No spam, unsubscribe anytime</p>
+                    </div>
+
+                    <!-- Popular Articles -->
+                    <div class="sidebar-card">
+                        <h3 class="text-xl font-bold text-primary mb-6 flex items-center">
+                            <i class="fas fa-fire text-orange-500 mr-2"></i>Trending Articles
+                        </h3>
+                        <div class="space-y-6">
+                            <div class="flex space-x-4 group cursor-pointer">
+                                <img src="./images/in4.jpg" alt="Article" class="w-20 h-20 rounded-xl object-cover group-hover:scale-105 transition-transform">
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-primary text-sm group-hover:text-secondary transition-colors leading-tight">
+                                        5 Common SIP Mistakes That Are Costing You Money
+                                    </h4>
+                                    <p class="text-gray-500 text-xs mt-1">Nov 28, 2024 • 4 min read</p>
+                                    <div class="flex items-center mt-2">
+                                        <span class="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">Trending</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex space-x-4 group cursor-pointer">
+                                <img src="./images/n5.jpg" alt="Article" class="w-20 h-20 rounded-xl object-cover group-hover:scale-105 transition-transform">
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-primary text-sm group-hover:text-secondary transition-colors leading-tight">
+                                        Emergency Fund: How Much is Really Enough in 2024?
+                                    </h4>
+                                    <p class="text-gray-500 text-xs mt-1">Nov 25, 2024 • 6 min read</p>
+                                    <div class="flex items-center mt-2">
+                                        <span class="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full">Popular</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex space-x-4 group cursor-pointer">
+                                <img src="./images/in3.jpg" alt="Article" class="w-20 h-20 rounded-xl object-cover group-hover:scale-105 transition-transform">
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-primary text-sm group-hover:text-secondary transition-colors leading-tight">
+                                        Child Education Planning: Start Early, Benefit More
+                                    </h4>
+                                    <p class="text-gray-500 text-xs mt-1">Nov 22, 2024 • 7 min read</p>
+                                    <div class="flex items-center mt-2">
+                                        <span class="text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded-full">Featured</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Categories -->
+                    <div class="sidebar-card">
+                        <h3 class="text-xl font-bold text-primary mb-6 flex items-center">
+                            <i class="fas fa-folder text-secondary mr-2"></i>Categories
+                        </h3>
+                        <div class="space-y-3">
+                            <a href="#" class="flex justify-between items-center p-3 rounded-xl hover:bg-secondary/5 transition-colors group">
+                                <div class="flex items-center">
+                                    <i class="fas fa-chart-line text-secondary mr-3"></i>
+                                    <span class="group-hover:text-secondary transition-colors">Mutual Funds</span>
+                                </div>
+                                <span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-xs font-semibold">12</span>
+                            </a>
+                            <a href="#" class="flex justify-between items-center p-3 rounded-xl hover:bg-secondary/5 transition-colors group">
+                                <div class="flex items-center">
+                                    <i class="fas fa-shield-alt text-green-500 mr-3"></i>
+                                    <span class="group-hover:text-secondary transition-colors">Insurance</span>
+                                </div>
+                                <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-semibold">8</span>
+                            </a>
+                            <a href="#" class="flex justify-between items-center p-3 rounded-xl hover:bg-secondary/5 transition-colors group">
+                                <div class="flex items-center">
+                                    <i class="fas fa-receipt text-purple-500 mr-3"></i>
+                                    <span class="group-hover:text-secondary transition-colors">Tax Planning</span>
+                                </div>
+                                <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs font-semibold">6</span>
+                            </a>
+                            <a href="#" class="flex justify-between items-center p-3 rounded-xl hover:bg-secondary/5 transition-colors group">
+                                <div class="flex items-center">
+                                    <i class="fas fa-piggy-bank text-orange-500 mr-3"></i>
+                                    <span class="group-hover:text-secondary transition-colors">Retirement</span>
+                                </div>
+                                <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-semibold">5</span>
+                            </a>
+                            <a href="#" class="flex justify-between items-center p-3 rounded-xl hover:bg-secondary/5 transition-colors group">
+                                <div class="flex items-center">
+                                    <i class="fas fa-chart-bar text-red-500 mr-3"></i>
+                                    <span class="group-hover:text-secondary transition-colors">Market Insights</span>
+                                </div>
+                                <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-semibold">4</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced CTA Widget -->
+                    <div class="sidebar-card bg-gradient-to-br from-primary to-blue-900 text-white relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+                        <div class="relative z-10">
+                            <div class="text-center mb-6">
+                                <div class="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-user-tie text-white text-2xl"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-3">Need Expert Advice?</h3>
+                                <p class="text-gray-300 text-sm">Get personalized financial recommendations from our certified advisors</p>
+                            </div>
+                            <button onclick="window.location.href='contact.html'" 
+                                    class="w-full bg-white text-primary px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors font-semibold">
+                                <i class="fas fa-calendar-check mr-2"></i>Book Free Consultation
+                            </button>
+                            <div class="flex items-center justify-center mt-4 space-x-4 text-sm text-gray-300">
+                                <div class="flex items-center">
+                                    <i class="fas fa-check-circle mr-1"></i>
+                                    <span>Free</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    <span>30 min</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-shield-alt mr-1"></i>
+                                    <span>Certified</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">Mishika <span class="gradient-text">Finvest</span></h3>
+                    <p class="text-gray-300 mb-6">Your trusted partner in financial & insurance planning with 22+ years of excellence.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="mutual-funds.html" class="text-gray-300 hover:text-secondary transition-colors">Mutual Funds</a></li>
+                        <li><a href="insurance.html" class="text-gray-300 hover:text-secondary transition-colors">Life Insurance</a></li>
+                        <li><a href="insurance.html" class="text-gray-300 hover:text-secondary transition-colors">Health Insurance</a></li>
+                        <li><a href="vehicle-insurance.html" class="text-gray-300 hover:text-secondary transition-colors">Vehicle Insurance</a></li>
+                        <li><a href="about.html" class="text-gray-300 hover:text-secondary transition-colors">Financial Planning</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-300 hover:text-secondary transition-colors">About Us</a></li>
+                        <li><a href="tools.html" class="text-gray-300 hover:text-secondary transition-colors">Calculators</a></li>
+                        <li><a href="blog.html" class="text-secondary">Blog</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-secondary transition-colors">Client Login</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-secondary transition-colors">Download CAS</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-3">
+                        <p class="text-gray-300"><i class="fas fa-phone mr-2"></i>+91 98765 43210</p>
+                        <p class="text-gray-300"><i class="fas fa-envelope mr-2"></i>info@mishikafinvest.com</p>
+                        <p class="text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i>Mumbai, India</p>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h5 class="font-semibold mb-2">Certifications</h5>
+                        <div class="flex space-x-4">
+                            <div class="bg-white/10 px-3 py-1 rounded">
+                                <span class="text-xs">AMFI Registered</span>
+                            </div>
+                            <div class="bg-white/10 px-3 py-1 rounded">
+                                <span class="text-xs">IRDAI Licensed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 mt-12 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-300 text-sm">© 2024 Mishika Finvest Pvt Ltd. All rights reserved.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <a href="#" class="text-gray-300 hover:text-secondary text-sm transition-colors">Privacy Policy</a>
+                        <a href="#" class="text-gray-300 hover:text-secondary text-sm transition-colors">Terms of Service</a>
+                        <a href="#" class="text-gray-300 hover:text-secondary text-sm transition-colors">Disclaimers</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <a href="https://wa.me/919876543210" target="_blank" class="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all transform hover:scale-110 floating">
+            <i class="fab fa-whatsapp text-2xl"></i>
+        </a>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-6 left-6 bg-secondary text-white p-3 rounded-full shadow-lg hover:bg-secondary/90 transition-all transform hover:scale-110 opacity-0 invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Insurance - Mishika Finvest Pvt Ltd</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#130F32',
+                        secondary: '#00CEE8',
+                        accent: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-white">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold text-primary">Mishika <span class="gradient-text">Finvest</span></h1>
+                    </div>
+                </div>
+                
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html" class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">Home</a>
+                        
+                        <div class="relative dropdown">
+                            <button class="text-secondary px-3 py-2 text-sm font-medium flex items-center">
+                                Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                            </button>
+                            <div class="dropdown-menu absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2">
+                                <a href="mutual-funds.html" class="block px-4 py-3 text-sm text-gray-700 hover:bg-secondary/10 hover:text-secondary transition-colors">
+                                    <i class="fas fa-chart-line mr-3 text-secondary"></i>Mutual Fund Services
+                                </a>
+                                <a href="insurance.html" class="block px-4 py-3 text-sm text-gray-700 hover:bg-secondary/10 hover:text-secondary transition-colors">
+                                    <i class="fas fa-shield-alt mr-3 text-secondary"></i>Health & Life Insurance
+                                </a>
+                                <a href="vehicle-insurance.html" class="block px-4 py-3 text-sm text-secondary bg-secondary/10">
+                                    <i class="fas fa-car mr-3 text-secondary"></i>Vehicle Insurance
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <a href="about.html" class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">About Us</a>
+                        <a href="tools.html" class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">Tools</a>
+                        <a href="blog.html" class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">Blog</a>
+                        <a href="contact.html" class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">Contact</a>
+                        <button onclick="window.location.href='contact.html'" class="bg-secondary text-white px-6 py-2 rounded-full hover:bg-secondary/90 transition-colors font-medium">
+                            Get Quote
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-primary hover:text-secondary p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 hidden">
+        <div class="fixed inset-0 bg-black/50" id="mobile-menu-overlay"></div>
+        <div class="offcanvas fixed top-0 left-0 h-full w-80 bg-white shadow-xl">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-xl font-bold text-primary">Menu</h2>
+                    <button id="close-mobile-menu" class="text-primary hover:text-secondary">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <nav class="space-y-4">
+                    <a href="index.html" class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Home</a>
+                    <div class="space-y-2">
+                        <p class="text-primary font-medium py-2">Services</p>
+                        <a href="mutual-funds.html" class="block text-gray-600 hover:text-secondary transition-colors py-2 pl-4">Mutual Fund Services</a>
+                        <a href="insurance.html" class="block text-gray-600 hover:text-secondary transition-colors py-2 pl-4">Health & Life Insurance</a>
+                        <a href="vehicle-insurance.html" class="block text-secondary py-2 pl-4 font-medium">Vehicle Insurance</a>
+                    </div>
+                    <a href="about.html" class="block text-primary hover:text-secondary transition-colors py-2 font-medium">About Us</a>
+                    <a href="tools.html" class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Tools</a>
+                    <a href="blog.html" class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Blog</a>
+                    <a href="contact.html" class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-4xl lg:text-5xl font-bold mb-4">Vehicle Insurance</h1>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                Comprehensive protection for your car and two-wheeler with instant quotes and easy claims
+            </p>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span>/</span>
+                <a href="#">Services</a>
+                <span>/</span>
+                <span>Vehicle Insurance</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Overview -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="animate-slide-in-left">
+                    <h2 class="text-4xl font-bold text-primary mb-6">Drive with Confidence</h2>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                        Your vehicle is more than just a mode of transport - it's your freedom, your convenience, and often a significant investment. Our comprehensive vehicle insurance solutions ensure you're protected against accidents, theft, natural disasters, and third-party liabilities.
+                    </p>
+                    <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                        With instant online quotes, cashless garage network, and 24/7 claim support, we make vehicle insurance simple, affordable, and reliable. Get the best coverage at competitive premiums from leading insurance companies.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-secondary mb-2">5000+</div>
+                            <div class="text-gray-600">Cashless Garages</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-secondary mb-2">30 Sec</div>
+                            <div class="text-gray-600">Instant Quotes</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-secondary mb-2">24/7</div>
+                            <div class="text-gray-600">Claim Support</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-secondary mb-2">99%</div>
+                            <div class="text-gray-600">Claim Settlement</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="animate-slide-in-right">
+                    <img src="./images/d1.jpg" alt="Vehicle Insurance" class="rounded-2xl shadow-xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Insurance Types -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-bold text-primary mb-4">Vehicle Insurance Plans</h2>
+                <p class="text-xl text-gray-600">Comprehensive coverage for all types of vehicles</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Car Insurance -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover animate-scale-in">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-car text-secondary text-2xl"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-primary">Car Insurance</h3>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-6">Protect your car against accidents, theft, and natural calamities with comprehensive coverage.</p>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="service-feature">
+                            <div class="service-feature-icon">
+                                <i class="fas fa-shield-alt text-secondary"></i>
+                            </div>
+                            <div class="service-feature-content">
+                                <h4>Third Party Liability</h4>
+                                <p>Mandatory coverage for legal liability towards third parties</p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-feature">
+                            <div class="service-feature-icon">
+                                <i class="fas fa-tools text-secondary"></i>
+                            </div>
+                            <div class="service-feature-content">
+                                <h4>Own Damage Cover</h4>
+                                <p>Protection against damage to your own vehicle</p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-feature">
+                            <div class="service-feature-icon">
+                                <i class="fas fa-user-injured text-secondary"></i>
+                            </div>
+                            <div class="service-feature-content">
+                                <h4>Personal Accident Cover</h4>
+                                <p>Coverage for driver and passenger injuries</p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-feature">
+                            <div class="service-feature-icon">
+                                <i class="fas fa-plus text-secondary"></i>
+                            </div>
+                            <div class="service-feature-content">
+                                <h4>Add-on Covers</h4>
+                                <p>Zero depreciation, engine protection, roadside assistance</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="window.location.href='contact.html'" class="w-full bg-secondary text-white py-3 rounded-full hover:bg-secondary/90 transition-colors font-medium">
+                        Get Car Insurance Quote
+                    </button>
+                </div>
+                
+                <!-- Two Wheeler Insurance -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg card-hover animate-scale-in" style="animation-delay: 0.2s;">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mr-4">
+                            <i class="fas fa-motorcycle text-secondary text-2xl"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-primary">Two Wheeler Insurance</h3>
+                    </div>
+                    
+                    <p class="text-gray-600 mb-6">Affordable and comprehensive insurance for your bike or scooter with instant policy issuance.</p>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="service-feature">
+                            <div class="service-feature-icon">
+                                <i class="fas fa-gavel text-secondary"></i>
+                            </div>
+                            <div class="service-feature-content">
+                                <h4>Legal Compliance</h4>
+                                <p>Mandatory third-party coverage as per Motor Vehicle Act</p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-feature">
+                            <div class="service-feature-icon">
+                                <i class="fas fa-wrench text-secondary"></i>
+                            </div>
+                            <div class="service-feature-content">
+                                <h4>Theft & Damage Protection</h4>
+                                <p>Coverage against theft, accidents, and natural disasters</p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-feature">
+                            <div class="service-feature-icon">
+                                <i class="fas fa-ambulance text-secondary"></i>
+                            </div>
+                            <div class="service-feature-content">
+                                <h4>Personal Accident</h4>
+                                <p>Rider protection with personal accident coverage</p>
+                            </div>
+                        </div>
+                        
+                        <div class="service-feature">
+                            <div class="service-feature-icon">
+                                <i class="fas fa-phone text-secondary"></i>
+                            </div>
+                            <div class="service-feature-content">
+                                <h4>Roadside Assistance</h4>
+                                <p>24/7 emergency support and towing services</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="window.location.href='contact.html'" class="w-full bg-secondary text-white py-3 rounded-full hover:bg-secondary/90 transition-colors font-medium">
+                        Get Bike Insurance Quote
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-bold text-primary mb-4">Why Choose Our Vehicle Insurance?</h2>
+                <p class="text-xl text-gray-600">Comprehensive benefits and superior service</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-scale-in text-center">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-credit-card text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2">Cashless Claims</h3>
+                    <p class="text-gray-600 text-sm">Network of 5000+ authorized garages for hassle-free cashless repairs</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-scale-in text-center" style="animation-delay: 0.1s;">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bolt text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2">Instant Policy</h3>
+                    <p class="text-gray-600 text-sm">Get your policy issued instantly with digital documentation</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-scale-in text-center" style="animation-delay: 0.2s;">
+                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-mobile-alt text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2">Mobile App Support</h3>
+                    <p class="text-gray-600 text-sm">Manage policies, file claims, and track status through mobile app</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-scale-in text-center" style="animation-delay: 0.3s;">
+                    <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-percentage text-yellow-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2">No Claim Bonus</h3>
+                    <p class="text-gray-600 text-sm">Earn up to 50% discount on premium for claim-free years</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-scale-in text-center" style="animation-delay: 0.4s;">
+                    <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tools text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2">Roadside Assistance</h3>
+                    <p class="text-gray-600 text-sm">24/7 emergency support including towing, battery jump-start, flat tire</p>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-scale-in text-center" style="animation-delay: 0.5s;">
+                    <div class="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-indigo-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2">Zero Depreciation</h3>
+                    <p class="text-gray-600 text-sm">Get full claim amount without depreciation deduction on parts</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add-on Covers -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-bold text-primary mb-4">Popular Add-on Covers</h2>
+                <p class="text-xl text-gray-600">Enhance your protection with additional coverage options</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-scale-in text-center">
+                    <div class="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cog text-secondary text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2">Zero Depreciation</h3>
+                    <p class="text-gray-600 text-sm mb-4">No depreciation on parts and accessories</p>
+                    <div class="text-secondary font-semibold">₹2,000 - ₹8,000</div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-scale-in text-center" style="animation-delay: 0.1s;">
+                    <div class="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-car-crash text-secondary text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2">Engine Protection</h3>
+                    <p class="text-gray-600 text-sm mb-4">Coverage for engine damage due to water ingression</p>
+                    <div class="text-secondary font-semibold">₹1,500 - ₹5,000</div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-scale-in text-center" style="animation-delay: 0.2s;">
+                    <div class="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-road text-secondary text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2">Roadside Assistance</h3>
+                    <p class="text-gray-600 text-sm mb-4">24/7 emergency support and towing</p>
+                    <div class="text-secondary font-semibold">₹500 - ₹2,000</div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-6 shadow-lg card-hover animate-scale-in text-center" style="animation-delay: 0.3s;">
+                    <div class="bg-secondary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-key text-secondary text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2">Key Replacement</h3>
+                    <p class="text-gray-600 text-sm mb-4">Coverage for lost or damaged keys</p>
+                    <div class="text-secondary font-semibold">₹300 - ₹1,500</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Claim Process -->
+    <section class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16 animate-fade-in">
+                <h2 class="text-4xl font-bold text-primary mb-4">Simple Claim Process</h2>
+                <p class="text-xl text-gray-600">Quick and hassle-free claim settlement</p>
+            </div>
+            
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="text-center animate-scale-in">
+                    <div class="bg-secondary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                        1
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Intimate Claim</h3>
+                    <p class="text-gray-600">Call our 24/7 helpline or use mobile app to intimate your claim immediately</p>
+                </div>
+                
+                <div class="text-center animate-scale-in" style="animation-delay: 0.2s;">
+                    <div class="bg-secondary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                        2
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Survey & Assessment</h3>
+                    <p class="text-gray-600">Our surveyor will assess the damage and provide repair estimate</p>
+                </div>
+                
+                <div class="text-center animate-scale-in" style="animation-delay: 0.4s;">
+                    <div class="bg-secondary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                        3
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Repair Authorization</h3>
+                    <p class="text-gray-600">Get your vehicle repaired at any of our network garages</p>
+                </div>
+                
+                <div class="text-center animate-scale-in" style="animation-delay: 0.6s;">
+                    <div class="bg-secondary w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                        4
+                    </div>
+                    <h3 class="text-xl font-bold text-primary mb-3">Settlement</h3>
+                    <p class="text-gray-600">Claim settlement directly with garage or reimbursement to you</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-r from-primary to-primary/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-white mb-4">Get Instant Vehicle Insurance Quote</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                Compare plans from top insurers and get the best deal for your vehicle in just 30 seconds
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="window.location.href='contact.html'" class="bg-secondary text-white px-8 py-4 rounded-full hover:bg-secondary/90 transition-all transform hover:scale-105 font-medium">
+                    <i class="fas fa-car mr-2"></i>Get Car Insurance Quote
+                </button>
+                <button onclick="window.location.href='contact.html'" class="border-2 border-white text-white px-8 py-4 rounded-full hover:bg-white hover:text-primary transition-all font-medium">
+                    <i class="fas fa-motorcycle mr-2"></i>Get Bike Insurance Quote
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4">Mishika <span class="gradient-text">Finvest</span></h3>
+                    <p class="text-gray-300 mb-6">Your trusted partner in financial & insurance planning with 22+ years of excellence.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="mutual-funds.html" class="text-gray-300 hover:text-secondary transition-colors">Mutual Funds</a></li>
+                        <li><a href="insurance.html" class="text-gray-300 hover:text-secondary transition-colors">Life Insurance</a></li>
+                        <li><a href="insurance.html" class="text-gray-300 hover:text-secondary transition-colors">Health Insurance</a></li>
+                        <li><a href="vehicle-insurance.html" class="text-secondary">Vehicle Insurance</a></li>
+                        <li><a href="about.html" class="text-gray-300 hover:text-secondary transition-colors">Financial Planning</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-300 hover:text-secondary transition-colors">About Us</a></li>
+                        <li><a href="tools.html" class="text-gray-300 hover:text-secondary transition-colors">Calculators</a></li>
+                        <li><a href="blog.html" class="text-gray-300 hover:text-secondary transition-colors">Blog</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-secondary transition-colors">Client Login</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-secondary transition-colors">Download CAS</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-3">
+                        <p class="text-gray-300"><i class="fas fa-phone mr-2"></i>+91 98765 43210</p>
+                        <p class="text-gray-300"><i class="fas fa-envelope mr-2"></i>info@mishikafinvest.com</p>
+                        <p class="text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i>Mumbai, India</p>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h5 class="font-semibold mb-2">Certifications</h5>
+                        <div class="flex space-x-4">
+                            <div class="bg-white/10 px-3 py-1 rounded">
+                                <span class="text-xs">AMFI Registered</span>
+                            </div>
+                            <div class="bg-white/10 px-3 py-1 rounded">
+                                <span class="text-xs">IRDAI Licensed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 mt-12 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-300 text-sm">© 2024 Mishika Finvest Pvt Ltd. All rights reserved.</p>
+                    <div class="flex space-x-6 mt-4 md:mt-0">
+                        <a href="#" class="text-gray-300 hover:text-secondary text-sm transition-colors">Privacy Policy</a>
+                        <a href="#" class="text-gray-300 hover:text-secondary text-sm transition-colors">Terms of Service</a>
+                        <a href="#" class="text-gray-300 hover:text-secondary text-sm transition-colors">Disclaimers</a>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-xs text-gray-400">
+                    <p class="mb-2">
+                        <strong>Vehicle Insurance Disclaimer:</strong> Insurance is the subject matter of solicitation. For more details on benefits, exclusions, limitations, terms and conditions, please read sales brochure/policy wording carefully before concluding a sale.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <a href="https://wa.me/919876543210" target="_blank" class="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-all transform hover:scale-110 floating">
+            <i class="fab fa-whatsapp text-2xl"></i>
+        </a>
+    </div>
+    
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-6 left-6 bg-secondary text-white p-3 rounded-full shadow-lg hover:bg-secondary/90 transition-all transform hover:scale-110 opacity-0 invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>

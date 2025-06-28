@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Tools & Calculators - Mishika Finvest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#130F32',
+                        secondary: '#00CEE8',
+                        accent: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .calculator-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .calculator-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+            border-color: #00CEE8;
+        }
+
+        /* Enhanced Range Slider Styles */
+        .range-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #00CEE8 0%, #00CEE8 50%, #e2e8f0 50%, #e2e8f0 100%);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00CEE8 0%, #0891b2 100%);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(0, 206, 232, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 6px 20px rgba(0, 206, 232, 0.6);
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00CEE8 0%, #0891b2 100%);
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(0, 206, 232, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .calculator-input {
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .calculator-input:focus {
+            border-color: #00CEE8;
+            box-shadow: 0 0 0 3px rgba(0, 206, 232, 0.1);
+            outline: none;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #00CEE8 0%, #0891b2 100%);
+            border-radius: 20px;
+            padding: 24px;
+            color: white;
+            text-align: center;
+        }
+
+        .result-highlight {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (min-width: 640px) {
+            .result-highlight {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .result-highlight {
+                font-size: 1rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .result-highlight {
+                font-size: 1rem;
+            }
+        }
+
+        .tool-icon {
+            background: linear-gradient(135deg, #00CEE8 0%, #0891b2 100%);
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 10px 25px rgba(0, 206, 232, 0.3);
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #00CEE8 0%, #0891b2 100%);
+            height: 8px;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .tab-button {
+            padding: 12px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #00CEE8 0%, #0891b2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 206, 232, 0.3);
+        }
+
+        .tab-button:not(.active) {
+            background: #f8fafc;
+            color: #64748b;
+            border-color: #e2e8f0;
+        }
+
+        .tab-button:not(.active):hover {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-elements::before,
+        .floating-elements::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, rgba(0, 206, 232, 0.1) 0%, rgba(8, 145, 178, 0.05) 100%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-elements::before {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-elements::after {
+            bottom: 10%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Input Group Styling */
+        .input-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .input-value-display {
+            background: linear-gradient(135deg, #00CEE8 0%, #0891b2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .tool-icon {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 16px;
+            }
+
+            .tab-button {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+
+            .tab-button i {
+                display: none;
+            }
+
+            .result-highlight {
+                font-size: 1.25rem;
+            }
+
+            .calculator-card {
+                margin: 0 -16px;
+                border-radius: 0;
+            }
+
+            .chart-container {
+                height: 250px;
+                padding: 15px;
+            }
+        }
+
+        /* Responsive Grid Improvements */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 1024px) {
+            .calculator-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+        }
+
+        /* Enhanced Button Styles */
+        .calculate-btn {
+            background: linear-gradient(135deg, #00CEE8 0%, #0891b2 100%);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(0, 206, 232, 0.3);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 206, 232, 0.4);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, .3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-gray-50 to-blue-50">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-xl md:text-2xl font-bold text-primary">Mishika <span
+                                class="gradient-text">Finvest</span></h1>
+                    </div>
+                </div>
+
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="index.html"
+                            class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">Home</a>
+
+                        <div class="relative dropdown">
+                            <button
+                                class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium flex items-center">
+                                Services <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                            </button>
+                            <div
+                                class="dropdown-menu absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2">
+                                <a href="mutual-funds.html"
+                                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-secondary/10 hover:text-secondary transition-colors">
+                                    <i class="fas fa-chart-line mr-3 text-secondary"></i>Mutual Fund Services
+                                </a>
+                                <a href="insurance.html"
+                                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-secondary/10 hover:text-secondary transition-colors">
+                                    <i class="fas fa-shield-alt mr-3 text-secondary"></i>Health & Life Insurance
+                                </a>
+                                <a href="vehicle-insurance.html"
+                                    class="block px-4 py-3 text-sm text-gray-700 hover:bg-secondary/10 hover:text-secondary transition-colors">
+                                    <i class="fas fa-car mr-3 text-secondary"></i>Vehicle Insurance
+                                </a>
+                            </div>
+                        </div>
+
+                        <a href="about.html"
+                            class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">About
+                            Us</a>
+                        <a href="tools.html" class="text-secondary px-3 py-2 text-sm font-medium">Tools</a>
+                        <a href="blog.html"
+                            class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">Blog</a>
+                        <a href="contact.html"
+                            class="text-primary hover:text-secondary transition-colors px-3 py-2 text-sm font-medium">Contact</a>
+                        <button onclick="window.location.href='contact.html'"
+                            class="bg-secondary text-white px-4 md:px-6 py-2 rounded-full hover:bg-secondary/90 transition-colors font-medium text-sm">
+                            Get Quote
+                        </button>
+                    </div>
+                </div>
+
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-primary hover:text-secondary p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 hidden">
+        <div class="fixed inset-0 bg-black/50" id="mobile-menu-overlay"></div>
+        <div class="offcanvas fixed top-0 left-0 h-full w-80 bg-white shadow-xl">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-xl font-bold text-primary">Menu</h2>
+                    <button id="close-mobile-menu" class="text-primary hover:text-secondary">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <nav class="space-y-4">
+                    <a href="index.html"
+                        class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Home</a>
+                    <div class="space-y-2">
+                        <p class="text-primary font-medium py-2">Services</p>
+                        <a href="mutual-funds.html"
+                            class="block text-gray-600 hover:text-secondary transition-colors py-2 pl-4">Mutual Fund
+                            Services</a>
+                        <a href="insurance.html"
+                            class="block text-gray-600 hover:text-secondary transition-colors py-2 pl-4">Health & Life
+                            Insurance</a>
+                        <a href="vehicle-insurance.html"
+                            class="block text-gray-600 hover:text-secondary transition-colors py-2 pl-4">Vehicle
+                            Insurance</a>
+                    </div>
+                    <a href="about.html"
+                        class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Tools</a>
+                    <a href="tools.html" class="block text-secondary py-2 font-medium">Tools</a>
+                    <a href="blog.html"
+                        class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Blog</a>
+                    <a href="contact.html"
+                        class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Page Header -->
+    <section class="relative pt-20 md:pt-24 pb-12 md:pb-20 overflow-hidden">
+        <div class="floating-elements"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center">
+                <div
+                    class="inline-flex items-center bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium mb-6">
+                    <i class="fas fa-calculator mr-2"></i>
+                    Financial Planning Tools
+                </div>
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold text-primary mb-6">
+                    Smart Financial
+                    <span class="bg-gradient-to-r from-secondary to-blue-600 bg-clip-text text-transparent">
+                        Calculators
+                    </span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    Make informed financial decisions with our advanced calculators. Plan your investments, insurance,
+                    and financial goals with precision.
+                </p>
+                <div class="flex flex-wrap justify-center gap-3 md:gap-4">
+                    <div class="bg-white rounded-full px-4 md:px-6 py-2 md:py-3 shadow-lg">
+                        <span class="text-secondary font-semibold text-sm md:text-base">✓ Instant Results</span>
+                    </div>
+                    <div class="bg-white rounded-full px-4 md:px-6 py-2 md:py-3 shadow-lg">
+                        <span class="text-secondary font-semibold text-sm md:text-base">✓ Expert Validated</span>
+                    </div>
+                    <div class="bg-white rounded-full px-4 md:px-6 py-2 md:py-3 shadow-lg">
+                        <span class="text-secondary font-semibold text-sm md:text-base">✓ Free to Use</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Tabs -->
+    <section class="py-6 md:py-8 bg-white/50 backdrop-blur-sm sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4 overflow-x-auto pb-2">
+                <button class="tab-button active" onclick="showCalculator('sip')">
+                    <i class="fas fa-chart-line mr-2"></i><span class="hidden sm:inline">SIP </span>Calculator
+                </button>
+                <button class="tab-button" onclick="showCalculator('term')">
+                    <i class="fas fa-shield-alt mr-2"></i><span class="hidden sm:inline">Term </span>Insurance
+                </button>
+                <button class="tab-button" onclick="showCalculator('health')">
+                    <i class="fas fa-heartbeat mr-2"></i><span class="hidden sm:inline">Health </span>Insurance
+                </button>
+                <button class="tab-button" onclick="showCalculator('goal')">
+                    <i class="fas fa-bullseye mr-2"></i><span class="hidden sm:inline">Goal </span>Planning
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced SIP Calculator -->
+    <section id="sip-calculator" class="calculator-section py-12 md:py-20 relative">
+
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <!-- Free Trial Badge -->
+            <div class="absolute -top-3 -right-3 z-10">
+                <span
+                    class="inline-flex items-center justify-center px-4 py-2 text-xs font-bold leading-none text-white transform rotate-6 bg-red-500 rounded-full shadow-lg animate-pulse">
+                    FREE TRIAL
+                    <span class="absolute flex h-3 w-3 -top-1 -right-1">
+                        <span
+                            class="absolute inline-flex w-full h-full bg-red-400 rounded-full opacity-75 animate-ping"></span>
+                        <span class="relative inline-flex w-3 h-3 bg-red-600 rounded-full"></span>
+                    </span>
+                </span>
+            </div>
+            <div class="calculator-card rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12">
+                <div class="calculator-grid">
+                    <div class="space-y-6 md:space-y-8">
+                        <div class="text-center lg:text-left">
+                            <div class="tool-icon">
+                                <i class="fas fa-chart-line text-white text-2xl md:text-3xl"></i>
+                            </div>
+                            <h2 class="text-2xl md:text-4xl font-bold text-primary mb-4">SIP Calculator</h2>
+                            <p class="text-gray-600 text-base md:text-lg">
+                                Calculate the future value of your Systematic Investment Plan and see the power of
+                                compounding.
+                            </p>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="input-group">
+                                <label class="input-label">Monthly Investment Amount</label>
+                                <div class="input-value-display" id="sip-amount-display">₹5,000</div>
+                                <input type="range" id="sip-amount-range" min="500" max="100000" value="5000"
+                                    class="range-slider w-full" oninput="updateSIPAmount(this.value)">
+                                <div class="range-labels">
+                                    <span>₹500</span>
+                                    <span>₹1,00,000</span>
+                                </div>
+                                <input type="number" id="sip-amount" class="calculator-input mt-3" placeholder="5000"
+                                    min="500" value="5000" oninput="updateSIPRange(this.value)">
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Investment Period</label>
+                                <div class="input-value-display" id="sip-years-display">10 Years</div>
+                                <input type="range" id="sip-years-range" min="1" max="30" value="10"
+                                    class="range-slider w-full" oninput="updateSIPYears(this.value)">
+                                <div class="range-labels">
+                                    <span>1 Year</span>
+                                    <span>30 Years</span>
+                                </div>
+                                <input type="number" id="sip-years" class="calculator-input mt-3" placeholder="10"
+                                    min="1" max="30" value="10" oninput="updateSIPYearsRange(this.value)">
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Expected Annual Return</label>
+                                <div class="input-value-display" id="sip-return-display">12%</div>
+                                <input type="range" id="sip-return-range" min="1" max="25" value="12" step="0.5"
+                                    class="range-slider w-full" oninput="updateSIPReturn(this.value)">
+                                <div class="range-labels">
+                                    <span>1%</span>
+                                    <span>25%</span>
+                                </div>
+                                <input type="number" id="sip-return" class="calculator-input mt-3" placeholder="12"
+                                    min="1" max="25" step="0.1" value="12" oninput="updateSIPReturnRange(this.value)">
+                            </div>
+
+                            <button id="calculate-sip" onclick="calculateSIP()" class="calculate-btn">
+                                <i class="fas fa-calculator mr-2"></i>Calculate SIP Returns
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6 flex flex-col justify-evenly">
+                        <div id="sip-result" class="flex flex-col justify-center">
+                            <div class="text-center text-gray-400 py-8 md:py-12">
+                                <i class="fas fa-chart-pie text-4xl md:text-6xl mb-4 opacity-30"></i>
+                                <p class="text-base md:text-lg">Enter your details to see the magic of SIP</p>
+                            </div>
+                        </div>
+                        <div class="chart-container hidden" id="sip-chart-container">
+                            <canvas id="sipChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Term Insurance Calculator -->
+    <section id="term-calculator" class="calculator-section py-12 md:py-20 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <!-- Free Trial Badge -->
+            <div class="absolute -top-3 -right-3 z-10">
+                <span
+                    class="inline-flex items-center justify-center px-4 py-2 text-xs font-bold leading-none text-white transform rotate-6 bg-red-500 rounded-full shadow-lg animate-pulse">
+                    FREE TRIAL
+                    <span class="absolute flex h-3 w-3 -top-1 -right-1">
+                        <span
+                            class="absolute inline-flex w-full h-full bg-red-400 rounded-full opacity-75 animate-ping"></span>
+                        <span class="relative inline-flex w-3 h-3 bg-red-600 rounded-full"></span>
+                    </span>
+                </span>
+            </div>
+            <div class="calculator-card rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12">
+                <div class="calculator-grid">
+                    <div class="space-y-6 md:space-y-8">
+                        <div class="text-center lg:text-left">
+                            <div class="tool-icon">
+                                <i class="fas fa-shield-alt text-white text-2xl md:text-3xl"></i>
+                            </div>
+                            <h2 class="text-2xl md:text-4xl font-bold text-primary mb-4">Term Insurance Calculator</h2>
+                            <p class="text-gray-600 text-base md:text-lg">
+                                Determine the right amount of term insurance coverage to protect your family's future.
+                            </p>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="input-group">
+                                <label class="input-label">Your Age</label>
+                                <input type="number" id="term-age" class="calculator-input" placeholder="30" min="18"
+                                    max="65">
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Monthly Income</label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
+                                    <input type="number" id="term-income" class="calculator-input pl-8"
+                                        placeholder="50000" min="10000">
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Number of Dependents</label>
+                                <select id="term-dependents" class="calculator-input">
+                                    <option value="">Select Dependents</option>
+                                    <option value="1">1 Dependent</option>
+                                    <option value="2">2 Dependents</option>
+                                    <option value="3">3 Dependents</option>
+                                    <option value="4">4 Dependents</option>
+                                    <option value="5">5+ Dependents</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Outstanding Loans (Optional)</label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
+                                    <input type="number" id="term-loans" class="calculator-input pl-8" placeholder="0"
+                                        min="0">
+                                </div>
+                            </div>
+
+                            <button id="calculate-term" onclick="calculateTermInsurance()" class="calculate-btn">
+                                <i class="fas fa-shield-alt mr-2"></i>Calculate Coverage
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="term-result" class="h-full flex items-center justify-center">
+                            <div class="text-center text-gray-400 py-8 md:py-12">
+                                <i class="fas fa-shield-alt text-4xl md:text-6xl mb-4 opacity-30"></i>
+                                <p class="text-base md:text-lg">Calculate your ideal insurance coverage</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Health Insurance Calculator -->
+    <section id="health-calculator" class="calculator-section py-12 md:py-20 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <!-- Free Trial Badge -->
+            <div class="absolute -top-3 -right-3 z-10">
+                <span
+                    class="inline-flex items-center justify-center px-4 py-2 text-xs font-bold leading-none text-white transform rotate-6 bg-red-500 rounded-full shadow-lg animate-pulse">
+                    FREE TRIAL
+                    <span class="absolute flex h-3 w-3 -top-1 -right-1">
+                        <span
+                            class="absolute inline-flex w-full h-full bg-red-400 rounded-full opacity-75 animate-ping"></span>
+                        <span class="relative inline-flex w-3 h-3 bg-red-600 rounded-full"></span>
+                    </span>
+                </span>
+            </div>
+            <div class="calculator-card rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12">
+                <div class="calculator-grid">
+                    <div class="space-y-6 md:space-y-8">
+                        <div class="text-center lg:text-left">
+                            <div class="tool-icon">
+                                <i class="fas fa-heartbeat text-white text-2xl md:text-3xl"></i>
+                            </div>
+                            <h2 class="text-2xl md:text-4xl font-bold text-primary mb-4">Health Insurance Calculator
+                            </h2>
+                            <p class="text-gray-600 text-base md:text-lg">
+                                Get an estimate of your health insurance premium based on your profile and coverage
+                                needs.
+                            </p>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="input-group">
+                                <label class="input-label">Age of Oldest Member</label>
+                                <input type="number" id="health-age" class="calculator-input" placeholder="35" min="18"
+                                    max="80">
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Number of Family Members</label>
+                                <select id="health-members" class="calculator-input">
+                                    <option value="">Select Members</option>
+                                    <option value="1">Individual (Self)</option>
+                                    <option value="2">Self + Spouse</option>
+                                    <option value="3">Self + Spouse + 1 Child</option>
+                                    <option value="4">Self + Spouse + 2 Children</option>
+                                    <option value="5">Self + Spouse + 3 Children</option>
+                                    <option value="6">Family of 6</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Coverage Amount</label>
+                                <select id="health-coverage" class="calculator-input">
+                                    <option value="">Select Coverage</option>
+                                    <option value="300000">₹3 Lakh</option>
+                                    <option value="500000">₹5 Lakh</option>
+                                    <option value="1000000">₹10 Lakh</option>
+                                    <option value="1500000">₹15 Lakh</option>
+                                    <option value="2000000">₹20 Lakh</option>
+                                    <option value="2500000">₹25 Lakh</option>
+                                    <option value="5000000">₹50 Lakh</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">City Tier</label>
+                                <select id="health-city" class="calculator-input">
+                                    <option value="">Select City Type</option>
+                                    <option value="metro">Metro City (Mumbai, Delhi, Bangalore)</option>
+                                    <option value="tier1">Tier 1 City (Pune, Ahmedabad, Chennai)</option>
+                                    <option value="tier2">Tier 2 City (Indore, Bhopal, Coimbatore)</option>
+                                    <option value="tier3">Tier 3 City & Rural Areas</option>
+                                </select>
+                            </div>
+
+                            <button id="calculate-health" onclick="calculateHealthInsurance()" class="calculate-btn">
+                                <i class="fas fa-heartbeat mr-2"></i>Calculate Premium
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="health-result" class="h-full flex items-center justify-center">
+                            <div class="text-center text-gray-400 py-8 md:py-12">
+                                <i class="fas fa-heartbeat text-4xl md:text-6xl mb-4 opacity-30"></i>
+                                <p class="text-base md:text-lg">Get your health insurance premium estimate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Goal Calculator -->
+    <section id="goal-calculator" class="calculator-section py-12 md:py-20 hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <!-- Free Trial Badge -->
+            <div class="absolute -top-3 -right-3 z-10">
+                <span
+                    class="inline-flex items-center justify-center px-4 py-2 text-xs font-bold leading-none text-white transform rotate-6 bg-red-500 rounded-full shadow-lg animate-pulse">
+                    FREE TRIAL
+                    <span class="absolute flex h-3 w-3 -top-1 -right-1">
+                        <span
+                            class="absolute inline-flex w-full h-full bg-red-400 rounded-full opacity-75 animate-ping"></span>
+                        <span class="relative inline-flex w-3 h-3 bg-red-600 rounded-full"></span>
+                    </span>
+                </span>
+            </div>
+            <div class="calculator-card rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12">
+                <div class="calculator-grid">
+                    <div class="space-y-6 md:space-y-8">
+                        <div class="text-center lg:text-left">
+                            <div class="tool-icon">
+                                <i class="fas fa-bullseye text-white text-2xl md:text-3xl"></i>
+                            </div>
+                            <h2 class="text-2xl md:text-4xl font-bold text-primary mb-4">Goal Planning Calculator</h2>
+                            <p class="text-gray-600 text-base md:text-lg">
+                                Plan for your financial goals like education, marriage, retirement, or dream home.
+                            </p>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="input-group">
+                                <label class="input-label">Goal Type</label>
+                                <select id="goal-type" class="calculator-input">
+                                    <option value="">Select Goal</option>
+                                    <option value="education">Child's Education</option>
+                                    <option value="marriage">Child's Marriage</option>
+                                    <option value="home">Dream Home</option>
+                                    <option value="retirement">Retirement</option>
+                                    <option value="vacation">Vacation</option>
+                                    <option value="other">Other Goal</option>
+                                </select>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Goal Amount</label>
+                                <div class="relative">
+                                    <span
+                                        class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">₹</span>
+                                    <input type="number" id="goal-amount" class="calculator-input pl-8"
+                                        placeholder="2000000" min="100000">
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Time to Achieve Goal</label>
+                                <div class="input-value-display" id="goal-years-display">15 Years</div>
+                                <input type="range" id="goal-years-range" min="1" max="30" value="15"
+                                    class="range-slider w-full" oninput="updateGoalYears(this.value)">
+                                <div class="range-labels">
+                                    <span>1 Year</span>
+                                    <span>30 Years</span>
+                                </div>
+                                <input type="number" id="goal-years" class="calculator-input mt-3" placeholder="15"
+                                    min="1" max="30" value="15" oninput="updateGoalYearsRange(this.value)">
+                            </div>
+
+                            <div class="input-group">
+                                <label class="input-label">Expected Annual Return</label>
+                                <div class="input-value-display" id="goal-return-display">12%</div>
+                                <input type="range" id="goal-return-range" min="1" max="20" value="12" step="0.5"
+                                    class="range-slider w-full" oninput="updateGoalReturn(this.value)">
+                                <div class="range-labels">
+                                    <span>1%</span>
+                                    <span>20%</span>
+                                </div>
+                                <input type="number" id="goal-return" class="calculator-input mt-3" placeholder="12"
+                                    min="1" max="20" step="0.1" value="12" oninput="updateGoalReturnRange(this.value)">
+                            </div>
+
+                            <button id="calculate-goal" onclick="calculateGoal()" class="calculate-btn">
+                                <i class="fas fa-bullseye mr-2"></i>Calculate Goal Plan
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="goal-result" class="h-full flex items-center justify-center">
+                            <div class="text-center text-gray-400 py-8 md:py-12">
+                                <i class="fas fa-bullseye text-4xl md:text-6xl mb-4 opacity-30"></i>
+                                <p class="text-base md:text-lg">Plan your financial goals systematically</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Tools Preview -->
+    <section class="py-12 md:py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">More Financial Tools</h2>
+                <p class="text-lg md:text-xl text-gray-600">Additional calculators to help you plan better</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div
+                    class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 border border-gray-100">
+                    <div
+                        class="bg-gradient-to-br from-purple-500 to-purple-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-percentage text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2 text-center">EMI Calculator</h3>
+                    <p class="text-gray-600 text-sm text-center mb-4">Calculate loan EMI for home, car, or personal
+                        loans</p>
+                    <div class="text-center">
+                        <span
+                            class="inline-flex items-center bg-purple-100 text-purple-600 px-3 py-1 rounded-full text-xs font-medium">
+                            Coming Soon
+                        </span>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 border border-gray-100">
+                    <div
+                        class="bg-gradient-to-br from-green-500 to-green-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-piggy-bank text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2 text-center">Retirement Calculator</h3>
+                    <p class="text-gray-600 text-sm text-center mb-4">Plan your retirement corpus and monthly savings
+                    </p>
+                    <div class="text-center">
+                        <span
+                            class="inline-flex items-center bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium">
+                            Coming Soon
+                        </span>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 border border-gray-100">
+                    <div
+                        class="bg-gradient-to-br from-orange-500 to-orange-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2 text-center">Education Calculator</h3>
+                    <p class="text-gray-600 text-sm text-center mb-4">Plan for your child's education expenses</p>
+                    <div class="text-center">
+                        <span
+                            class="inline-flex items-center bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-xs font-medium">
+                            Coming Soon
+                        </span>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 border border-gray-100">
+                    <div
+                        class="bg-gradient-to-br from-red-500 to-red-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-pie text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-primary mb-2 text-center">Tax Calculator</h3>
+                    <p class="text-gray-600 text-sm text-center mb-4">Calculate income tax and plan tax savings</p>
+                    <div class="text-center">
+                        <span
+                            class="inline-flex items-center bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-medium">
+                            Coming Soon
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced CTA Section -->
+    <section class="py-12 md:py-20 bg-gradient-to-r from-primary via-primary to-blue-900 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/20"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
+                    Ready to Start Your Financial Journey?
+                </h2>
+                <p class="text-lg md:text-xl text-gray-300 mb-8">
+                    Our expert advisors are here to help you make informed decisions based on your calculations
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center">
+                    <button onclick="window.location.href='contact.html'"
+                        class="bg-secondary text-white px-6 md:px-8 py-3 md:py-4 rounded-2xl hover:bg-secondary/90 transition-all transform hover:scale-105 font-semibold text-base md:text-lg shadow-xl">
+                        <i class="fas fa-phone mr-2"></i>Book Free Consultation
+                    </button>
+                    <button onclick="window.location.href='contact.html'"
+                        class="border-2 border-white text-white px-6 md:px-8 py-3 md:py-4 rounded-2xl hover:bg-white hover:text-primary transition-all font-semibold text-base md:text-lg">
+                        <i class="fas fa-envelope mr-2"></i>Get Personalized Quote
+                    </button>
+                </div>
+                <div class="mt-8 flex flex-wrap justify-center gap-4 md:gap-8 text-gray-300">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-secondary mr-2"></i>
+                        <span>Free Consultation</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-secondary mr-2"></i>
+                        <span>Expert Advice</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-secondary mr-2"></i>
+                        <span>Personalized Plans</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-12 md:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-4">Mishika <span class="gradient-text">Finvest</span>
+                    </h3>
+                    <p class="text-gray-300 mb-6">Your trusted partner in financial & insurance planning with 22+ years
+                        of excellence.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="bg-white/10 p-3 rounded-full hover:bg-secondary transition-colors">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Services</h4>
+                    <ul class="space-y-2">
+                        <li><a href="mutual-funds.html"
+                                class="text-gray-300 hover:text-secondary transition-colors">Mutual Funds</a></li>
+                        <li><a href="insurance.html" class="text-gray-300 hover:text-secondary transition-colors">Life
+                                Insurance</a></li>
+                        <li><a href="insurance.html" class="text-gray-300 hover:text-secondary transition-colors">Health
+                                Insurance</a></li>
+                        <li><a href="vehicle-insurance.html"
+                                class="text-gray-300 hover:text-secondary transition-colors">Vehicle Insurance</a></li>
+                        <li><a href="about.html" class="text-gray-300 hover:text-secondary transition-colors">Financial
+                                Planning</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="about.html" class="text-gray-300 hover:text-secondary transition-colors">About
+                                Us</a></li>
+                        <li><a href="tools.html" class="text-secondary">Calculators</a></li>
+                        <li><a href="blog.html" class="text-gray-300 hover:text-secondary transition-colors">Blog</a>
+                        </li>
+                        <li><a href="#" class="text-gray-300 hover:text-secondary transition-colors">Client Login</a>
+                        </li>
+                        <li><a href="#" class="text-gray-300 hover:text-secondary transition-colors">Download CAS</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <div class="space-y-3">
+                        <p class="text-gray-300"><i class="fas fa-phone mr-2"></i>+91 98765 43210</p>
+                        <p class="text-gray-300"><i class="fas fa-envelope mr-2"></i>info@mishikafinvest.com</p>
+                        <p class="text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i>Mumbai, India</p>
+                    </div>
+
+                    <div class="mt-6">
+                        <h5 class="font-semibold mb-2">Certifications</h5>
+                        <div class="flex flex-wrap gap-2">
+                            <div class="bg-white/10 px-3 py-1 rounded">
+                                <span class="text-xs">AMFI Registered</span>
+                            </div>
+                            <div class="bg-white/10 px-3 py-1 rounded">
+                                <span class="text-xs">IRDAI Licensed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-white/20 mt-12 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-300 text-sm">© 2024 Mishika Finvest Pvt Ltd. All rights reserved.</p>
+                    <div class="flex flex-wrap justify-center gap-4 md:gap-6 mt-4 md:mt-0">
+                        <a href="#" class="text-gray-300 hover:text-secondary text-sm transition-colors">Privacy
+                            Policy</a>
+                        <a href="#" class="text-gray-300 hover:text-secondary text-sm transition-colors">Terms of
+                            Service</a>
+                        <a href="#" class="text-gray-300 hover:text-secondary text-sm transition-colors">Disclaimers</a>
+                    </div>
+                </div>
+
+                <div class="mt-6 text-xs text-gray-400">
+                    <p class="mb-2">
+                        <strong>Disclaimer:</strong> The calculations provided are for illustrative purposes only and
+                        should not be considered as financial advice. Actual returns may vary based on market
+                        conditions.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <div class="fixed bottom-4 md:bottom-6 right-4 md:right-6 z-50">
+        <a href="https://wa.me/919876543210" target="_blank"
+            class="bg-green-500 text-white p-3 md:p-4 rounded-full shadow-lg hover:bg-green-600 transition-all transform hover:scale-110 floating">
+            <i class="fab fa-whatsapp text-xl md:text-2xl"></i>
+        </a>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top"
+        class="fixed bottom-4 md:bottom-6 left-4 md:left-6 bg-secondary text-white p-3 rounded-full shadow-lg hover:bg-secondary/90 transition-all transform hover:scale-110 opacity-0 invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+    <script>
+        // Enhanced Calculator Functions with improved UI and responsiveness
+        let sipChart = null;
+
+        function showCalculator(type) {
+            // Hide all calculators
+            document.querySelectorAll('.calculator-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected calculator
+            document.getElementById(type + '-calculator').classList.remove('hidden');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Enhanced range slider functions with visual feedback
+        function updateSIPAmount(value) {
+            document.getElementById('sip-amount').value = value;
+            document.getElementById('sip-amount-display').textContent = `₹${parseInt(value).toLocaleString('en-IN')}`;
+            updateRangeSliderProgress('sip-amount-range', value, 500, 100000);
+        }
+
+        function updateSIPRange(value) {
+            document.getElementById('sip-amount-range').value = value;
+            document.getElementById('sip-amount-display').textContent = `₹${parseInt(value).toLocaleString('en-IN')}`;
+            updateRangeSliderProgress('sip-amount-range', value, 500, 100000);
+        }
+
+        function updateSIPYears(value) {
+            document.getElementById('sip-years').value = value;
+            document.getElementById('sip-years-display').textContent = `${value} Year${value > 1 ? 's' : ''}`;
+            updateRangeSliderProgress('sip-years-range', value, 1, 30);
+        }
+
+        function updateSIPYearsRange(value) {
+            document.getElementById('sip-years-range').value = value;
+            document.getElementById('sip-years-display').textContent = `${value} Year${value > 1 ? 's' : ''}`;
+            updateRangeSliderProgress('sip-years-range', value, 1, 30);
+        }
+
+        function updateSIPReturn(value) {
+            document.getElementById('sip-return').value = value;
+            document.getElementById('sip-return-display').textContent = `${value}%`;
+            updateRangeSliderProgress('sip-return-range', value, 1, 25);
+        }
+
+        function updateSIPReturnRange(value) {
+            document.getElementById('sip-return-range').value = value;
+            document.getElementById('sip-return-display').textContent = `${value}%`;
+            updateRangeSliderProgress('sip-return-range', value, 1, 25);
+        }
+
+        // Goal calculator range functions
+        function updateGoalYears(value) {
+            document.getElementById('goal-years').value = value;
+            document.getElementById('goal-years-display').textContent = `${value} Year${value > 1 ? 's' : ''}`;
+            updateRangeSliderProgress('goal-years-range', value, 1, 30);
+        }
+
+        function updateGoalYearsRange(value) {
+            document.getElementById('goal-years-range').value = value;
+            document.getElementById('goal-years-display').textContent = `${value} Year${value > 1 ? 's' : ''}`;
+            updateRangeSliderProgress('goal-years-range', value, 1, 30);
+        }
+
+        function updateGoalReturn(value) {
+            document.getElementById('goal-return').value = value;
+            document.getElementById('goal-return-display').textContent = `${value}%`;
+            updateRangeSliderProgress('goal-return-range', value, 1, 20);
+        }
+
+        function updateGoalReturnRange(value) {
+            document.getElementById('goal-return-range').value = value;
+            document.getElementById('goal-return-display').textContent = `${value}%`;
+            updateRangeSliderProgress('goal-return-range', value, 1, 20);
+        }
+
+        // Enhanced range slider progress visualization
+        function updateRangeSliderProgress(sliderId, value, min, max) {
+            const slider = document.getElementById(sliderId);
+            const percentage = ((value - min) / (max - min)) * 100;
+            slider.style.background = `linear-gradient(to right, #00CEE8 0%, #00CEE8 ${percentage}%, #e2e8f0 ${percentage}%, #e2e8f0 100%)`;
+        }
+
+        // Enhanced SIP calculation with loading state
+        function calculateSIP() {
+            const button = document.getElementById('calculate-sip');
+            const originalText = button.innerHTML;
+
+            // Show loading state
+            button.innerHTML = '<div class="loading"></div> Calculating...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                const monthlyAmount = parseFloat(document.getElementById('sip-amount').value);
+                const years = parseFloat(document.getElementById('sip-years').value);
+                const expectedReturn = parseFloat(document.getElementById('sip-return').value);
+
+                if (!monthlyAmount || !years || !expectedReturn) {
+                    alert('Please fill all fields');
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    return;
+                }
+
+                const monthlyRate = expectedReturn / 100 / 12;
+                const months = years * 12;
+
+                const futureValue = monthlyAmount * (((Math.pow(1 + monthlyRate, months)) - 1) / monthlyRate) * (1 + monthlyRate);
+                const totalInvestment = monthlyAmount * months;
+                const totalReturns = futureValue - totalInvestment;
+
+                document.getElementById('sip-result').innerHTML = `
+                    <div class="space-y-6">
+                        <div class="result-card">
+                            <h3 class="text-xl md:text-2xl font-bold mb-6">SIP Investment Results</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                                <div class="text-center">
+                                    <div class="text-xs md:text-sm opacity-80 mb-2">Total Investment</div>
+                                    <div class="result-highlight">₹${Math.round(totalInvestment).toLocaleString('en-IN')}</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xs md:text-sm opacity-80 mb-2">Total Returns</div>
+                                    <div class="result-highlight">₹${Math.round(totalReturns).toLocaleString('en-IN')}</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xs md:text-sm opacity-80 mb-2">Maturity Value</div>
+                                    <div class="result-highlight">₹${Math.round(futureValue).toLocaleString('en-IN')}</div>
+                                </div>
+                            </div>
+                            <div class="mt-6 bg-white/20 rounded-xl p-4">
+                                <div class="flex justify-between items-center mb-2 text-xs md:text-sm">
+                                    <span>Investment Progress</span>
+                                    <span>${((totalReturns / totalInvestment) * 100).toFixed(1)}% Returns</span>
+                                </div>
+                                <div class="bg-white/20 rounded-full h-3">
+                                    <div class="progress-bar rounded-full h-3" style="width: ${(totalInvestment / (totalInvestment + totalReturns)) * 100}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Show and create chart
+                document.getElementById('sip-chart-container').classList.remove('hidden');
+                createSIPChart(totalInvestment, totalReturns, years);
+
+                // Reset button state
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 800);
+        }
+
+        function createSIPChart(investment, returns, years) {
+            const ctx = document.getElementById('sipChart').getContext('2d');
+
+            if (sipChart) {
+                sipChart.destroy();
+            }
+
+            sipChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Total Investment', 'Total Returns'],
+                    datasets: [{
+                        data: [investment, returns],
+                        backgroundColor: ['#64748b', '#00CEE8'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                font: {
+                                    size: window.innerWidth < 768 ? 10 : 12
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function calculateTermInsurance() {
+            const button = document.getElementById('calculate-term');
+            const originalText = button.innerHTML;
+
+            // Show loading state
+            button.innerHTML = '<div class="loading"></div> Calculating...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                const age = parseInt(document.getElementById('term-age').value);
+                const income = parseFloat(document.getElementById('term-income').value);
+                const dependents = parseInt(document.getElementById('term-dependents').value);
+                const loans = parseFloat(document.getElementById('term-loans').value) || 0;
+
+                if (!age || !income || !dependents) {
+                    alert('Please fill all required fields');
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    return;
+                }
+
+                // Enhanced calculation
+                const coverageMultiplier = dependents > 2 ? 15 : 12;
+                const annualIncome = income * 12;
+                const basicCoverage = annualIncome * coverageMultiplier;
+                const recommendedCoverage = basicCoverage + loans;
+
+                // Premium calculation with more factors
+                let premiumRate = 0.002;
+                if (age < 25) premiumRate = 0.0015;
+                else if (age < 35) premiumRate = 0.002;
+                else if (age < 45) premiumRate = 0.0025;
+                else premiumRate = 0.003;
+
+                const estimatedPremium = recommendedCoverage * premiumRate;
+
+                document.getElementById('term-result').innerHTML = `
+                    <div class="space-y-6">
+                        <div class="result-card">
+                            <h3 class="text-xl md:text-2xl font-bold mb-6">Term Insurance Recommendation</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                                <div class="text-center">
+                                    <div class="text-xs md:text-sm opacity-80 mb-2">Recommended Coverage</div>
+                                    <div class="result-highlight">₹${Math.round(recommendedCoverage).toLocaleString('en-IN')}</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xs md:text-sm opacity-80 mb-2">Annual Premium</div>
+                                    <div class="result-highlight">₹${Math.round(estimatedPremium).toLocaleString('en-IN')}</div>
+                                </div>
+                            </div>
+                            <div class="mt-6 bg-white/20 rounded-xl p-4">
+                                <div class="text-xs md:text-sm space-y-2">
+                                    <div class="flex justify-between">
+                                        <span>Basic Coverage (${coverageMultiplier}x income):</span>
+                                        <span>₹${basicCoverage.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    ${loans > 0 ? `<div class="flex justify-between">
+                                        <span>Outstanding Loans:</span>
+                                        <span>₹${loans.toLocaleString('en-IN')}</span>
+                                    </div>` : ''}
+                                    <div class="border-t border-white/20 pt-2 flex justify-between font-semibold">
+                                        <span>Total Coverage:</span>
+                                        <span>₹${recommendedCoverage.toLocaleString('en-IN')}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center text-xs md:text-sm opacity-80">
+                                *Premium may vary based on health conditions and insurer
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Reset button state
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 800);
+        }
+
+        function calculateHealthInsurance() {
+            const button = document.getElementById('calculate-health');
+            const originalText = button.innerHTML;
+
+            // Show loading state
+            button.innerHTML = '<div class="loading"></div> Calculating...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                const age = parseInt(document.getElementById('health-age').value);
+                const members = parseInt(document.getElementById('health-members').value);
+                const coverage = parseFloat(document.getElementById('health-coverage').value);
+                const city = document.getElementById('health-city').value;
+
+                if (!age || !members || !coverage || !city) {
+                    alert('Please fill all fields');
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    return;
+                }
+
+                // Enhanced premium calculation
+                let basePremium = coverage * 0.025; // 2.5% base rate
+
+                // Age factor
+                if (age > 60) basePremium *= 2.5;
+                else if (age > 45) basePremium *= 1.8;
+                else if (age > 35) basePremium *= 1.3;
+
+                // Family size factor
+                if (members > 4) basePremium *= 1.2;
+                else if (members > 2) basePremium *= 1.1;
+
+                // City factor
+                const cityMultiplier = {
+                    'metro': 1.3,
+                    'tier1': 1.1,
+                    'tier2': 1.0,
+                    'tier3': 0.9
+                };
+                basePremium *= cityMultiplier[city];
+
+                const estimatedPremium = basePremium;
+                const monthlyPremium = estimatedPremium / 12;
+
+                document.getElementById('health-result').innerHTML = `
+                    <div class="space-y-6">
+                        <div class="result-card">
+                            <h3 class="text-xl md:text-2xl font-bold mb-6">Health Insurance Premium</h3>
+                            <div class="text-center mb-6">
+                                <div class="text-xs md:text-sm opacity-80 mb-2">Estimated Annual Premium</div>
+                                <div class="result-highlight">₹${Math.round(estimatedPremium).toLocaleString('en-IN')}</div>
+                                <div class="text-xs md:text-sm opacity-80 mt-2">₹${Math.round(monthlyPremium).toLocaleString('en-IN')} per month</div>
+                            </div>
+                            <div class="bg-white/20 rounded-xl p-4">
+                                <div class="text-xs md:text-sm space-y-2">
+                                    <div class="flex justify-between">
+                                        <span>Coverage Amount:</span>
+                                        <span>₹${coverage.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Family Members:</span>
+                                        <span>${members}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Oldest Member Age:</span>
+                                        <span>${age} years</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>City Type:</span>
+                                        <span class="capitalize">${city.replace(/\d/, ' ')}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center text-xs md:text-sm opacity-80">
+                                *Premium depends on medical history and pre-existing conditions
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Reset button state
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 800);
+        }
+
+        function calculateGoal() {
+            const button = document.getElementById('calculate-goal');
+            const originalText = button.innerHTML;
+
+            // Show loading state
+            button.innerHTML = '<div class="loading"></div> Calculating...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                const goalAmount = parseFloat(document.getElementById('goal-amount').value);
+                const timeFrame = parseFloat(document.getElementById('goal-years').value);
+                const expectedReturn = parseFloat(document.getElementById('goal-return').value);
+                const goalType = document.getElementById('goal-type').value;
+
+                if (!goalAmount || !timeFrame || !expectedReturn) {
+                    alert('Please fill all fields');
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    return;
+                }
+
+                const monthlyRate = expectedReturn / 100 / 12;
+                const months = timeFrame * 12;
+
+                // Calculate required monthly SIP
+                const requiredSIP = goalAmount / (((Math.pow(1 + monthlyRate, months)) - 1) / monthlyRate);
+
+                // Calculate lump sum needed today
+                const lumpSumToday = goalAmount / Math.pow(1 + expectedReturn / 100, timeFrame);
+
+                // Calculate with inflation (assuming 6% inflation)
+                const inflationRate = 0.06;
+                const inflationAdjustedGoal = goalAmount * Math.pow(1 + inflationRate, timeFrame);
+                const inflationAdjustedSIP = inflationAdjustedGoal / (((Math.pow(1 + monthlyRate, months)) - 1) / monthlyRate);
+
+                document.getElementById('goal-result').innerHTML = `
+                    <div class="space-y-6">
+                        <div class="result-card">
+                            <h3 class="text-xl md:text-2xl font-bold mb-6">${goalType ? goalType.charAt(0).toUpperCase() + goalType.slice(1) : 'Goal'} Planning Results</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+                                <div class="text-center">
+                                    <div class="text-xs md:text-sm opacity-80 mb-2">Monthly SIP Required</div>
+                                    <div class="result-highlight">₹${Math.round(requiredSIP).toLocaleString('en-IN')}</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-xs md:text-sm opacity-80 mb-2">Lump Sum Today</div>
+                                    <div class="result-highlight">₹${Math.round(lumpSumToday).toLocaleString('en-IN')}</div>
+                                </div>
+                            </div>
+                            <div class="bg-white/20 rounded-xl p-4 mb-4">
+                                <div class="text-xs md:text-sm space-y-2">
+                                    <div class="flex justify-between">
+                                        <span>Goal Amount:</span>
+                                        <span>₹${goalAmount.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Time Frame:</span>
+                                        <span>${timeFrame} years</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Expected Return:</span>
+                                        <span>${expectedReturn}% per annum</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white/20 rounded-xl p-4">
+                                <div class="text-center mb-3">
+                                    <div class="text-xs md:text-sm opacity-80">With Inflation Adjustment (6%)</div>
+                                </div>
+                                <div class="text-xs md:text-sm space-y-2">
+                                    <div class="flex justify-between">
+                                        <span>Inflation Adjusted Goal:</span>
+                                        <span>₹${inflationAdjustedGoal.toLocaleString('en-IN')}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Required Monthly SIP:</span>
+                                        <span>₹${inflationAdjustedSIP.toLocaleString('en-IN')}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center text-xs md:text-sm opacity-80">
+                                *Calculations assume consistent returns and regular investments
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Reset button state
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 800);
+        }
+
+        // Initialize page with responsive range sliders
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize all range sliders with proper styling
+            updateRangeSliderProgress('sip-amount-range', 5000, 500, 100000);
+            updateRangeSliderProgress('sip-years-range', 10, 1, 30);
+            updateRangeSliderProgress('sip-return-range', 12, 1, 25);
+            updateRangeSliderProgress('goal-years-range', 15, 1, 30);
+            updateRangeSliderProgress('goal-return-range', 12, 1, 20);
+
+            // Auto-calculate SIP on page load with default values
+            setTimeout(() => {
+                calculateSIP();
+            }, 1500);
+
+            // Handle window resize for chart responsiveness
+            window.addEventListener('resize', function () {
+                if (sipChart) {
+                    sipChart.resize();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
