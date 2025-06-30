@@ -362,3 +362,14 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: #0891b2;
 }
+
+
+html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+}
+
+/* Fix for floating elements causing overflow */
+.floating {
+    max-width: 100%;
+}

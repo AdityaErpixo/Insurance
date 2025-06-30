@@ -439,7 +439,7 @@
                             Insurance</a>
                     </div>
                     <a href="about.html"
-                        class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Tools</a>
+                        class="block text-primary hover:text-secondary transition-colors py-2 font-medium">About</a>
                     <a href="tools.html" class="block text-secondary py-2 font-medium">Tools</a>
                     <a href="blog.html"
                         class="block text-primary hover:text-secondary transition-colors py-2 font-medium">Blog</a>
@@ -490,13 +490,13 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-wrap justify-center gap-2 md:gap-4 overflow-x-auto pb-2">
                 <button class="tab-button active" onclick="showCalculator('sip')">
-                    <i class="fas fa-chart-line mr-2"></i><span class="hidden sm:inline">SIP </span>Calculator
+                    <i class="fas fa-chart-line mr-2"></i><span class="hidden sm:inline">SIP </span>SIP
                 </button>
                 <button class="tab-button" onclick="showCalculator('term')">
-                    <i class="fas fa-shield-alt mr-2"></i><span class="hidden sm:inline">Term </span>Insurance
+                    <i class="fas fa-shield-alt mr-2"></i><span class="hidden sm:inline">Term </span>Term
                 </button>
                 <button class="tab-button" onclick="showCalculator('health')">
-                    <i class="fas fa-heartbeat mr-2"></i><span class="hidden sm:inline">Health </span>Insurance
+                    <i class="fas fa-heartbeat mr-2"></i><span class="hidden sm:inline">Health </span>Health
                 </button>
                 <button class="tab-button" onclick="showCalculator('goal')">
                     <i class="fas fa-bullseye mr-2"></i><span class="hidden sm:inline">Goal </span>Planning
@@ -1583,6 +1583,39 @@
                     sipChart.resize();
                 }
             });
+
+            // Function to show calculator and activate tab
+            function showCalculatorFromHash(type) {
+                // Hide all calculators
+                document.querySelectorAll('.calculator-section').forEach(section => {
+                    section.classList.add('hidden');
+                });
+
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Show the requested calculator
+                const calculator = document.getElementById(`${type}-calculator`);
+                if (calculator) {
+                    calculator.classList.remove('hidden');
+                }
+
+                // Activate the corresponding tab
+                const tab = document.querySelector(`.tab-button[onclick*="showCalculator('${type}')"]`);
+                if (tab) {
+                    tab.classList.add('active');
+                }
+            }
+
+            // Check URL hash on page load
+            const hash = window.location.hash.substring(1); // Remove #
+            const validCalculators = ['sip', 'term', 'health', 'goal'];
+
+            if (validCalculators.includes(hash)) {
+                showCalculatorFromHash(hash);
+            }
         });
     </script>
 </body>
